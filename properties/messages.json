@@ -1,0 +1,16 @@
+{
+    "success":{
+        "youWin":
+            "Parabéns!!!",
+        "youWinAgain":
+            "Parabéns novamente!!!"    
+    },
+    "erros":{
+        "isWrong":"Tente novamente!!!",
+        "almostRight":"Você quase finalizou. Tente novamente!!!"
+    },
+    "default":{
+        "welcome":"Seja bem Vindo ao NomeDoJogo"
+    }
+
+}
