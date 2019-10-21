@@ -1,4 +1,4 @@
-import utils.generators
+
 
 
 class GeoFigure(object):
@@ -8,6 +8,7 @@ class GeoFigure(object):
 
 
     def get_circle(self,surface, r, c):
+        pass
 
 
 
@@ -19,7 +20,7 @@ class Circle(object):
         self._c = c
         self._surface = surface
         self._color = color
-        self._pos = pos if pos != None  else 
+        self._pos = pos if pos != None  else 0
     
-    def build(self):
-        _circle = pygame.draw.circle(, color, pos, radius, width=0)
+    #def build(self):
+        #_circle = pygame.draw.circle(Surface, color, pos, radius, width=0)
