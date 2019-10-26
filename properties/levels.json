@@ -1,38 +1,43 @@
 {
     "level1":{
         "title":"",
-        "story_phrases":[
+        "introducao":
             "A primeira coisa que você pode fazer....",
-            "A segunda coisa que você pode fazer....",
-            "A terceira coisa que você pode fazer....",
-            "A quarta coisa que você pode fazer....",
-            "A quinta coisa que você pode fazer....",
-            "A sexta coisa que você pode fazer...."
-        ]
+        "personagens":[
+            {
+                "personagem1": {
+                    "falaAndando":"dssad",
+                    "falaFazendo":"",
+                    "falaFeliz":""
+                }
+            },
+            {
+                "personagem2": {
+                    "falaAndando":"dssad",
+                    "falaFazendo":"dsa",
+                    "falaFeliz":"sdas"
+                }
+            }
+        ],
+        "dicas":{
+            "fluxoBinarioABB":"dicassdasdas",
+            "fluxoBinarioABA":"dicassdasdas"
+        }
+        
     },
 
     "level2":{
         "title":"",
-        "story_phrases":[
-            "A primeira coisa que você pode fazer....",
-            "A segunda coisa que você pode fazer....",
-            "A terceira coisa que você pode fazer....",
-            "A quarta coisa que você pode fazer....",
-            "A quinta coisa que você pode fazer....",
-            "A sexta coisa que você pode fazer...."
-        ]
+        "introducao":
+            "A primeira coisa que você pode fazer...."
+        
     },
 
     "level3":{
         "title":"",
-        "story_phrases":[
-            "A primeira coisa que você pode fazer....",
-            "A segunda coisa que você pode fazer....",
-            "A terceira coisa que você pode fazer....",
-            "A quarta coisa que você pode fazer....",
-            "A quinta coisa que você pode fazer....",
-            "A sexta coisa que você pode fazer...."
-        ]
+        "introducao":
+            "A primeira coisa que você pode fazer...."
+       
     },
 
     "level4":{

@@ -7,9 +7,11 @@ class GeoFigure(object):
         pass
 
 
-    def get_circle(self,surface, r, c):
+    def get_circle(self,surface, r, c, pos):
         pass
 
+    def get_square(self, surface, w, h, pos):
+        pass
 
 
 

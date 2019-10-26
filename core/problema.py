@@ -1,0 +1,1 @@
+## montagem de nos e ponteiros com textos ###
