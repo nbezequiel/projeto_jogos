@@ -4,7 +4,7 @@ sys.path.append("..")
 from core.elements.geo_figures import *
 pygame.display.set_caption('Game Name')
 pygame.font.init() 
-myfont = pygame.font.SysFont('freesans', 12)
+myfont = pygame.font.SysFont('loma', 12)
 
 #from ..utils.properties_reader import PropertiesReader
 from utils.properties_reader import PropertiesReader
@@ -81,9 +81,10 @@ class Level(object):
 
 class Node(object):
 
-    def __init__(self, surface, node_type, pos):
+    def __init__(self, surface, node_type, pos, text_pos):
         self._node_type = node_type
         self._pos = pos 
+        self._text_pos = text_pos
         self._surface = surface
         self._animation_id = None
         self._value = None
@@ -94,6 +95,7 @@ class Node(object):
         self._arrow = None
         self._left_node = None
         self._enabled = False
+        self._decision = None
         
 
     def set_pos(self, pos):
@@ -119,9 +121,13 @@ class Node(object):
 
     def set_text_ballon_format(self):
         
-        if self._node_type == 1:
+        if self._node_type == 1 or self._node_type == 4 :
             x = GeoFigures()
             return x.get_rectangle(self._surface,(255,255,255), self._pos)
+        
+        if self._node_type == 2:
+            x = GeoFigures()
+            return x.get_square(self._surface,(255,255,255), self._pos)
 
 
 
@@ -135,12 +141,37 @@ class Node(object):
 
     def blit_elements(self, node, surface):
         if node == None: return
+        
+        if node._node_type == 4 and node._enabled == True : 
+            pygame.draw.rect(surface,(255, 255, 255),(800,560, 100,40), 0)
+
         if node._enabled == True and node._node_type != 0: 
-            self._text_ballon = self.set_text_ballon_format()
-            surface.blit(myfont.render(self._message, False,(0,0,0)),(self._pos[0]+10,self._pos[1]+10,self._pos[2],self._pos[3]))
+            node._text_ballon = node.set_text_ballon_format()
+            surface.blit(myfont.render(node._message, False,(0,0,0)),node._text_pos)
             #surface.blit(self._arrow, rect)
-        if node._left_node == None and node._right_node != None:
-            surface = self.blit_elements(node._right_node, surface)
+        
+        if node._right_node != None:
+            if node._enabled == True and node._right_node._node_type == 4 or node._right_node._node_type == 2:
+                node._right_node._enabled = True
+                self.blit_elements(node._right_node, surface)
+                return
+        
+        if node._left_node != None :
+
+            if node._enabled == True and node._left_node._node_type == 4 or node._left_node._node_type == 2:
+                node._left_node._enabled = True
+                self.blit_elements(node._left_node, surface)
+                return
+
+        if node._right_node != None and node._left_node != None:
+            self.blit_elements(node._right_node, surface)
+            self.blit_elements(node._left_node, surface)
+        
+        if node._node_type == 2 and node._left_node._enabled == False and node._right_node._enabled == False:
+            pygame.draw.rect(surface,(0, 0, 0),(400,240, 100,40), 0)
+            surface.blit(myfont.render("Sim", False, (255,255,255)),(430,250, 100,40))
+            pygame.draw.rect(surface,(0, 0, 0),(400,300, 100,40), 0)
+            surface.blit(myfont.render("Não", False, (255,255,255)),(430,310, 100,40))
         return surface
 
     
@@ -186,13 +217,21 @@ class BuildLevels(object):
         def a(event):pass
         level = Level(surface, a)
         level._background = pygame.image.load("resources/images/backgrounds/exemple.jpeg")
-        node1 = Node(cls.surface,1, (70,70,100,30)).with_value(0.1).with_message("Hora do almoço").set_enabled(True)
-        node2 = Node(cls.surface,1, (70,100,100,100)).with_value(0.1).with_message("""
-        Hora do almoço
-        """).set_enabled(True)
+        node1 = Node(cls.surface,1, (80,20,100,40), (90,30,100,40)).with_value(0.1).with_message("Hora do almoço").set_enabled(True)
+        node2 = Node(cls.surface,2, (60,90,100,100), (90,150,100,100)).with_value(0.1).with_message("Hora do almoço").set_enabled(True)
+        node3 = Node(cls.surface,1, (150,230,100,40), (160,240,100,40)).with_value(0.1).with_message("Hora do almoço").set_enabled(False)
+        node4 = Node(cls.surface,1, (10,230,100,40), (20,240,100,40)).with_value(0.1).with_message("Hora do almoço").set_enabled(False)
+        node5 = Node(cls.surface,4, (80,300,100,40), (90,300,100,40)).with_value(0.1).with_message("Hora do almoço").set_enabled(False)
         level._problem._list_nodes.append(node1)
         level._problem._list_nodes.append(node2)
+        level._problem._list_nodes.append(node3)
+        level._problem._list_nodes.append(node4)
+        level._problem._list_nodes.append(node5)
+        node3._left_node = node5
+        node4._right_node = node5
         node1._right_node = node2
+        node2._left_node = node4
+        node2._right_node = node3
         level._problem._root_node = node1
         
         return level
