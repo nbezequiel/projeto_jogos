@@ -1,6 +1,6 @@
 import random
 
-class Generator(self):
+class Generator(object):
     
     @classmethod
     def randomic_color(cls):

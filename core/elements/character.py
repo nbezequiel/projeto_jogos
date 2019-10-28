@@ -1,20 +1,30 @@
 
-from ../moviment import CharacterMoviment as moviment
-from ../animation import CharacterAnimation as animation
+from ..moviment import CharacterMoviment as moviment
+from ..animation import CharacterAnimation as animation
 
-
-class Compilador(object):
+class Character(object):
 
     def __init__(self):
         self._images = []
         self._used_image = ""
+        self._speaking = False
         self._pos = 0
         self._surface = 0
         self._size = ()
         self._width = 0
         self._height = 0
-        self._game = None
-        self._messageBox =None ## classe com imagem de fundo e texto dinâmico posição de personagem calculada
+        self._message = None
+        self._text_baloon = None ## classe com imagem de fundo e texto dinâmico posição de personagem calculada
+
+    def speak(self):
+        self._speaking = True
+
+
+
+class Compilador(Character):
+
+    def __init__(self):
+        super().__init__(self)
 
     def give_tip(self, level, game):
         pass

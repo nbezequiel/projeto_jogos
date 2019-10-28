@@ -1,18 +1,20 @@
 import os
 import json
+import sys
+sys.path.append("..")
 
 class PropertiesReader():
 
     @classmethod
     def get_paths(cls):
-        folder = "../properties/"
+        folder = "properties"
         cls._paths = [os.path.join(folder, file_path) for file_path in os.listdir(folder)]
         return cls._paths
     
     @classmethod
     def get_files(cls):
         cls._paths = cls.get_paths()
-        cls._files = {file.replace(".json","").replace("../properties/",""): open(file, "r+") for file in cls._paths}
+        cls._files = {file.replace(".json","").replace("/properties/",""): open(file, "r+") for file in cls._paths}
         return cls._files
 
     @classmethod
@@ -25,6 +27,10 @@ class PropertiesReader():
 
     def __init__(self):
         self._files = self.cast_files_to_json()
+
+    @property
+    def files(self):
+        return self._files
 
 
 
