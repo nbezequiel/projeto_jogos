@@ -2,6 +2,8 @@ import pygame
 import sys
 sys.path.append("..")
 from core.elements.geo_figures import *
+from .elements.character import Compilador
+
 pygame.display.set_caption('Game Name')
 pygame.font.init() 
 myfont = pygame.font.SysFont('loma', 12)
@@ -18,11 +20,14 @@ class Level(object):
         self._score = 0 
         self._own_events = own_events
         self._characters = []
+        self._init_characters = []
+        self._end_characters = []
         self.clickable_choices = []
         self._background = None
         self._timer = None ## time progressivo
         self._problem =  Problem()
         self._end_animation =  self.check_animation(self._problem)
+        self._init_screen = True
         self._completed = False
 
     @property
@@ -55,11 +60,19 @@ class Level(object):
 
     def blit_elements(self):
         self._surface.blit(self._background, (0,0))
+        for character in self._init_characters:
+            character.blit_elements(self._surface)
+
+
+
+        if self._init_screen == True: return
+
+        
         
         self._surface = self._problem.blit_elements(self._surface)
        
         for character in self._characters:
-            self._surface.blit(character._image)
+            self._surface.blit(character._main_image)
             if character._speaking == True: 
                 self._surface.blit(character._text_baloon)
                 self._surface.blit(character._message)
@@ -147,7 +160,11 @@ class Node(object):
 
         if node._enabled == True and node._node_type != 0: 
             node._text_ballon = node.set_text_ballon_format()
-            surface.blit(myfont.render(node._message, False,(0,0,0)),node._text_pos)
+            y_text = 0
+            for text in node._message:
+                pos = node._text_pos
+                surface.blit(myfont.render(text, False,(0,0,0)),(pos[0],pos[1] +y_text, pos[2], pos[3]))
+                y_text += 13
             #surface.blit(self._arrow, rect)
         
         if node._right_node != None:
@@ -214,24 +231,30 @@ class BuildLevels(object):
     
     @classmethod
     def _create_level_1(cls, surface):
-        def a(event):pass
+        def a(event):pass # mock event
         level = Level(surface, a)
-        level._background = pygame.image.load("resources/images/backgrounds/exemple.jpeg")
-        node1 = Node(cls.surface,1, (80,20,100,40), (90,30,100,40)).with_value(0.1).with_message("Hora do almoço").set_enabled(True)
-        node2 = Node(cls.surface,2, (60,90,100,100), (90,150,100,100)).with_value(0.1).with_message("Hora do almoço").set_enabled(True)
-        node3 = Node(cls.surface,1, (150,230,100,40), (160,240,100,40)).with_value(0.1).with_message("Hora do almoço").set_enabled(False)
-        node4 = Node(cls.surface,1, (10,230,100,40), (20,240,100,40)).with_value(0.1).with_message("Hora do almoço").set_enabled(False)
-        node5 = Node(cls.surface,4, (80,300,100,40), (90,300,100,40)).with_value(0.1).with_message("Hora do almoço").set_enabled(False)
+        level._background = pygame.image.load("resources/images/backgrounds/back_fase1.png")
+        compilador = Compilador(surface, (100,100), ["Mensagem de introdução", "ao level!!"])
+        level._init_characters.append(compilador)
+
+        node1 = Node(cls.surface,1, (80,20,100,40), (90,30,100,40)).with_value(0.1).with_message(["Hora do almoço"]).set_enabled(True)
+        node2 = Node(cls.surface,2, (60,90,100,100), (90,150,100,100)).with_value(0.1).with_message(["Hora do", "almoço"]).set_enabled(True)
+        node3 = Node(cls.surface,1, (150,230,100,40), (160,240,100,40)).with_value(0.1).with_message(["Hora do almoço"]).set_enabled(False)
+        node4 = Node(cls.surface,1, (10,230,100,40), (20,240,100,40)).with_value(0.1).with_message(["Hora do almoço"]).set_enabled(False)
+        node5 = Node(cls.surface,4, (80,300,100,40), (90,300,100,40)).with_value(0.1).with_message(["Hora do almoço"]).set_enabled(False)
+
         level._problem._list_nodes.append(node1)
         level._problem._list_nodes.append(node2)
         level._problem._list_nodes.append(node3)
         level._problem._list_nodes.append(node4)
         level._problem._list_nodes.append(node5)
+
         node3._left_node = node5
         node4._right_node = node5
         node1._right_node = node2
         node2._left_node = node4
         node2._right_node = node3
+
         level._problem._root_node = node1
         
         return level
