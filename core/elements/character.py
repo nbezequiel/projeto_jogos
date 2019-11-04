@@ -5,7 +5,7 @@ from .geo_figures import GeoFigures
 
 pygame.display.set_caption('Game Name')
 pygame.font.init() 
-myfont = pygame.font.SysFont('loma', 12)
+myfont = pygame.font.SysFont('loma', 20)
 
 class Character(object):
 
@@ -36,7 +36,7 @@ class Compilador(object):
         self._speaking = True
         self._message = message
         self._surface = surface
-        self._message_pos =(self._pos[0]-20, self._pos[1] -30, 300, 300)
+        self._message_pos =(self._pos[0]-110, self._pos[1] -110, 100, 80)
         self._text_baloon = None
         
 
@@ -51,11 +51,12 @@ class Compilador(object):
     def blit_message(self, message, surface):
         y_text= 0
         if self._speaking:
-            self._text_baloon = GeoFigures().get_rectangle(surface,(255,255,255), (self._pos[0]-20, self._pos[1] -30, 300, 300))
+            self._text_baloon = pygame.image.load("resources/images/elements/baloon.png")
+            self._surface.blit(self._text_baloon,(self._pos[0]-370, self._pos[1]-300))
             for  text in message:
                 pos = self._message_pos
-                surface.blit(myfont.render(text, False,(0,0,0)),( pos[0],pos[1]+ y_text, pos[2], pos[3]))
-                y_text += 13
+                surface.blit(myfont.render(text, False,(255,255,255)),(pos[0] -210 ,(pos[1]-170)+ y_text, pos[2], pos[3]))
+                y_text += 20
 
     def give_tip(self, level, game, message):
         self.blit_message(message)
