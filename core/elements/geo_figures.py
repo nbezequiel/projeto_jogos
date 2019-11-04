@@ -27,11 +27,9 @@ class Square(object):
         self._rect = rect
 
     def build(self):
-        print(self._rect)
-        square = pygame.Surface((int(self._rect[2]),int(self._rect[3])), pygame.SRCALPHA)
-        square.fill(self._color)
-        square = pygame.transform.rotate(square, 45)
-        return self._surface.blit(square, (self._rect[0], self._rect[1]))
+        square = pygame.image.load("resources/images/elements/square.png")
+        #square = pygame.transform.rotate(square, 45)
+        return self._surface.blit(square, (self._rect[0]+20, self._rect[1]+20))
 
 class Rectangle(object):
     def __init__(self,surface, color, rect):
@@ -41,7 +39,8 @@ class Rectangle(object):
         
 
     def build(self):
-        pygame.draw.rect(self._surface,self._color,self._rect, 0)
+        square = pygame.image.load("resources/images/elements/rec.png")
+        self._surface.blit(square,(self._rect[0]-20, self._rect[1] -10))
         return self._surface
 
 class Circle(object):
